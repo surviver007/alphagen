@@ -143,12 +143,12 @@ class QlibBacktest:
 
 
 if __name__ == "__main__":
-    qlib_backtest = QlibBacktest()
+    qlib_backtest = QlibBacktest(benchmark='000001.SZ')
 
     data = StockData(instrument='csi300',
-                     start_time='2020-01-01',
-                     end_time='2021-12-31')
+                     start_time='2023-01-01',
+                     end_time='2023-08-10')
     expr = Mul(EMA(Sub(Delta(Mul(Log(open_),Constant(-30.0)),50),Constant(-0.01)),40),Mul(Div(Abs(EMA(low,50)),close),Constant(0.01)))
     data_df = data.make_dataframe(expr.evaluate(data))
 
-    qlib_backtest.run(data_df)
+    # qlib_backtest.run(data_df)

@@ -11,7 +11,7 @@ class FeatureType(IntEnum):
     HIGH = 2
     LOW = 3
     VOLUME = 4
-    VWAP = 5
+    # VWAP = 5
 
 
 class StockData:
@@ -42,7 +42,9 @@ class StockData:
             return
         import qlib
         from qlib.config import REG_CN
-        qlib.init(provider_uri="~/.qlib/qlib_data/cn_data_rolling", region=REG_CN)
+        # qlib.init(provider_uri="~/.qlib/qlib_data/cn_data_rolling", region=REG_CN)
+        qlib.init(provider_uri="E:/dev/qlib_data/cn_data_day", region=REG_CN)   # 修改
+
         cls._qlib_initialized = True
 
     def _load_exprs(self, exprs: Union[str, List[str]]) -> pd.DataFrame:
@@ -69,6 +71,11 @@ class StockData:
         dates = df.index.levels[0]                                      # type: ignore
         stock_ids = df.columns
         values = df.values
+
+        print("Size of values array:", values.size)  # 修改
+        print("Length of features:", len(features))  # 修改
+        print("Last dimension of values:", values.shape[-1])  # 修改
+
         values = values.reshape((-1, len(features), values.shape[-1]))  # type: ignore
         return torch.tensor(values, dtype=torch.float, device=self.device), dates, stock_ids
 
